@@ -1,0 +1,78 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependencies
+node_modules
+dist
+dist-ssr
+*.local
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Editor
+.vscode
+.vscode/*
+!.vscode/extensions.json
+.vscode-shared/
+*.code-workspace
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Local agent and plugin caches
+.codex/
+.copilot/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Build output
+dist/
+build/
+.next/
+out/
+
+# Test coverage
+coverage/
+.nyc_output
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+.gitconfig
+.git-for-windows-updater
+
+# Temporary
+temp/
+tmp/
+*.tmp
+
+# Prisma client cache (migrations must be version controlled)
+.prisma/
+
+# Preserved material excluded from active quality and deployment paths
+archive/
+backups/
+legacy/

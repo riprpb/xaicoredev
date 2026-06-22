@@ -1,0 +1,123 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  password      String
+  avatar        String?
+  verified      Boolean   @default(false)
+  role          UserRole  @default(USER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  wallets       Wallet[]
+  transactions  Transaction[]
+  brains        Brain[]
+  
+  @@index([email])
+}
+
+model Wallet {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  address       String    @unique
+  balance       Decimal   @default(0)
+  chainId       Int
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  transactions  Transaction[]
+
+  @@index([userId])
+}
+
+model Transaction {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  walletId      String
+  wallet        Wallet    @relation(fields: [walletId], references: [id], onDelete: Cascade)
+  type          TransactionType
+  amount        Decimal
+  status        TransactionStatus @default(PENDING)
+  hash          String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([walletId])
+}
+
+model Brain {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name          String
+  description   String?
+  type          BrainType
+  status        BrainStatus @default(ACTIVE)
+  config        Json?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([userId])
+}
+
+model Subscription {
+  id            String    @id @default(cuid())
+  userId        String
+  email         String
+  plan          String
+  status        String    @default("active")
+  startDate     DateTime  @default(now())
+  endDate       DateTime?
+  stripeId      String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+enum UserRole {
+  ADMIN
+  USER
+  PREMIUM
+}
+
+enum TransactionType {
+  DEPOSIT
+  WITHDRAWAL
+  TRANSFER
+  TRADE
+}
+
+enum TransactionStatus {
+  PENDING
+  CONFIRMED
+  FAILED
+  CANCELLED
+}
+
+enum BrainType {
+  NEURAL_NETWORK
+  LLM
+  HYBRID
+  CUSTOM
+}
+
+enum BrainStatus {
+  ACTIVE
+  INACTIVE
+  TRAINING
+  ERROR
+}
