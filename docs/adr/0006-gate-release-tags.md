@@ -41,6 +41,9 @@ CI should verify tag format and attach build, test, security, and assessment evi
 
 Git repository, CI pipeline, Gate assessments, deployment documentation.
 
+This decision is extended by ADR-0007, which requires evidence archival and Owner
+approval before the annotated tag is created.
+
 ## Superseded Decisions
 
 None.

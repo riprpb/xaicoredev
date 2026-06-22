@@ -1,7 +1,8 @@
 # Gate 0 Updated Repository Assessment
 
 **Assessment date:** 2026-06-22  
-**Phase:** Gate 0 complete; Owner acceptance pending  
+**Phase:** Gate 0 complete; Owner approved
+
 **Business features:** Not started
 
 ## Milestone: Gate 0 Complete
@@ -17,8 +18,9 @@
 | Security Baseline | PASS |
 | Ready for Gate 1 | YES |
 
-Ready means the Gate 0 exit criteria are satisfied. Gate 1 remains paused until the
-Owner explicitly authorizes it and resolves the decisions in the Gate 1 plan.
+Ready means the Gate 0 exit criteria are satisfied. Owner approval of Gate 0 was
+recorded before tagging. Gate 1 remains paused until the Owner explicitly authorizes
+it and resolves the decisions in the Gate 1 plan.
 
 ### Outstanding Issues
 
@@ -31,10 +33,12 @@ Owner explicitly authorizes it and resolves the decisions in the Gate 1 plan.
 - Replace the draft Prisma schema with a Gate 1 migration baseline.
 - Migrate end-of-life ESLint 8 configuration to a supported flat-config release.
 
-### Release Marker
+### Release Markers
 
-Gate 0 is represented by annotated Git tag `v0.1.0-gate0` after the verified Gate 0
-commit. Every future Gate must end with a verified commit and annotated semantic tag.
+Gate 0 is represented by annotated Git tag `v0.1.0-gate0`. The expanded evidence
+archive and approval-ordering policy is a documentation correction represented by
+`v0.1.1-gate0`; the original tag remains immutable. Every future Gate ends with a
+verified commit, Owner approval, evidence archive, and annotated semantic tag.
 
 ## Summary
 
@@ -86,8 +90,9 @@ Standardized manifest design is additionally documented at
 
 ## Remaining Risks
 
-- The parent Git repository still has no commits and the global Git configuration is
-  malformed. The intended repository root must be confirmed before initial history.
+- The independent `xaicoredev/` repository is initialized and tagged, but no remote
+  backup is confirmed. The user-level Git configuration remains malformed and is
+  bypassed locally for repository operations.
 - Ignored legacy, archive, and backup material needs an explicit external retention
   location before workstation cleanup.
 - The current Prisma schema remains a draft with no migration baseline or active client.
@@ -117,5 +122,6 @@ The final verification used a clean `npm ci --ignore-scripts` installation and p
 
 ## Recommendation
 
-Accept Gate 0 and pause for Owner decisions on the repository root and Gate 1 plan.
-Do not activate business or AI features from legacy material.
+Gate 0 is accepted. Keep Gate 1 paused for explicit Owner authorization and the
+decisions in its implementation plan. Do not activate business or AI features from
+legacy material.

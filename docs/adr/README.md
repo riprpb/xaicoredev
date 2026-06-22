@@ -18,3 +18,4 @@ later decisions supersede rather than rewrite history.
 - [ADR-0004: Quarantine and selectively recover legacy source](0004-legacy-quarantine.md)
 - [ADR-0005: Contract-first Gate 0 foundations](0005-contract-first-platform-foundations.md)
 - [ADR-0006: Gate release tags](0006-gate-release-tags.md)
+- [ADR-0007: Gate evidence archive and approval ordering](0007-gate-evidence-archive.md)

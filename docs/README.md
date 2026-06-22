@@ -25,6 +25,7 @@ Owner authority or constitutional rules.
 - `deployment/`: environments, CI/CD, release, rollback, and recovery.
 - `roadmap/`: approved execution plans and phase gates.
 - `operations/`: runbooks, health, observability, support, and Owner operations.
+- `gates/`: immutable Gate evidence indexes and accepted engineering snapshots.
 
 ## Status Language
 
@@ -38,3 +39,7 @@ Owner authority or constitutional rules.
 
 Legacy documents under `docs/reference/` are historical evidence, not authoritative
 statements of implementation status.
+
+## Gate History
+
+- [Gate 0 evidence](gates/gate-0/README.md)

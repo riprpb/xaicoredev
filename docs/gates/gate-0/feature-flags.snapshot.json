@@ -1,0 +1,20 @@
+{
+  "snapshotVersion": "1.0",
+  "gate": 0,
+  "capturedAt": "2026-06-22",
+  "flags": {
+    "kernel": true,
+    "haley": false,
+    "scarlett": false,
+    "production": false,
+    "hope-shield": false,
+    "hope-s": false,
+    "hope-tech": false,
+    "wallet": false,
+    "trading": false,
+    "marketplace": false,
+    "billing": false,
+    "avatar-studio": false,
+    "experimental": false
+  }
+}
