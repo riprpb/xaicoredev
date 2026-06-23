@@ -3,37 +3,35 @@
 ```mermaid
 flowchart LR
     Web[src/pages and src/services] --> API[src/server]
-    API --> Config[src/config]
-    API --> Platform[src/platform]
+    API --> Kernel[kernel]
 
-    Platform --> Health[contracts/health]
-    Platform --> Lifecycle[lifecycle]
-    Platform --> Manifest[manifests]
-    Platform --> Registry[registry]
-    Platform --> Memory[memory]
-    Platform --> Provider[providers]
-    Platform --> Trust[trust]
-    Platform --> Flags[feature-flags]
+    Kernel --> Health[contracts/health]
+    Kernel --> Lifecycle[lifecycle]
+    Kernel --> Manifest[manifests]
+    Kernel --> Registry[registry]
+    Kernel --> Memory[memory]
+    Kernel --> Provider[providers]
+    Kernel --> Trust[trust]
+    Kernel --> Flags[feature-flags]
+    Kernel --> HaleyCore[haley-core]
+    Kernel --> Permission[permissions]
+    Kernel --> Audit[audit]
+    Kernel --> Config[config]
+    Kernel --> Events[events]
 
-    Registry --> Manifest
-    Registry --> Health
-    Registry --> Lifecycle
-    Memory --> Manifest
-    Provider --> Flags
-    Trust --> Health
-
-    Database[(PostgreSQL / Prisma - Gate 1)]
-    Registry -. future repository .-> Database
-    Memory -. future metadata .-> Database
-    API -. future accounts .-> Database
+    Kernel -. repositories .-> Database[(PostgreSQL / Prisma - Gate 1)]
 ```
 
 ## Dependency Law
 
-- `src/platform` must not depend on UI code or business modules.
-- Contract packages may depend only on narrower platform contracts.
-- Business modules may depend on platform contracts, never the reverse.
-- Provider adapters implement Provider Gateway interfaces outside the core contracts.
-- Persistence is introduced through repositories in Gate 1, not directly inside
-  domain contracts.
-- Circular dependencies are prohibited.
+- The Kernel is the single runtime integration center.
+- Platform components implement Kernel ports and do not invoke peer implementations.
+- Shared contract imports may depend only on narrower platform contracts and carry no
+  runtime authority.
+- Business modules and AI may depend on Kernel contracts; the Kernel never depends on
+  UI or business modules.
+- Provider adapters, persistence adapters, and external infrastructure remain behind
+  Kernel-owned contracts.
+- Persistence is introduced through repositories owned by Kernel services, not
+  directly inside domain contracts.
+- Circular dependencies and runtime peer-to-peer platform calls are prohibited.

@@ -1,5 +1,7 @@
 # XAICore Platform
 
+**Primary repository:** `xaicoredev`
+
 XAICore is in Gate 0 stabilization. The active application is a React/Vite frontend,
 an Express API scaffold, a PostgreSQL/Prisma schema draft, and contract-only platform
 foundations. Business AI, billing, KYC, wallet, trading, and blockchain features are

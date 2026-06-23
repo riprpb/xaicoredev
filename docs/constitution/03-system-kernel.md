@@ -12,3 +12,8 @@ and lifecycle management, shutdown, recovery, and disaster-recovery support.
 The Kernel remains lightweight, independently testable, observable, secure,
 fault-tolerant, and stateless where practical. It depends only on underlying
 infrastructure. No AI may initialize before required Kernel services are healthy.
+
+The Kernel is the single architectural center of XAICore. Platform services,
+registries, AI, providers, memory operations, permission evaluations, configuration,
+audit, events, and lifecycle operations integrate through Kernel contracts; direct
+runtime peer-to-peer platform dependencies are prohibited.

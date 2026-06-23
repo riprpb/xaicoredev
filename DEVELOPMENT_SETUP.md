@@ -19,6 +19,10 @@ npm run build
 Copy `.env.example` to `.env.local` for local execution and replace placeholders with
 local values. Never commit `.env.local` or print secret values in logs.
 
+Runtime configuration supports `development`, `test`, `staging`, and `production`.
+Staging and production fail startup without an explicit API host and HTTPS CORS
+origins. See [runtime configuration](docs/deployment/runtime-configuration.md).
+
 Prisma reads `DATABASE_URL` from the process environment or a root `.env` file. The
 application uses `.env.local`, so export the value before invoking Prisma directly:
 
@@ -45,7 +49,8 @@ builds. Do not import directly from `legacy/`, `archive/`, or `backups/`.
 
 ## Database
 
-`prisma/schema.prisma` is a draft and no Gate 1 migration baseline has been approved.
+`prisma/schema.prisma` is the Gate 1 foundation baseline. Apply only version-controlled
+migrations; do not use `prisma db push` for shared or production environments.
 Do not run production migrations or collect user data. Once Gate 1 begins, all schema
 changes will use version-controlled Prisma migrations.
 

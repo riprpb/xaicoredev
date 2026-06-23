@@ -43,7 +43,6 @@ xaicoredev/
 
 ## Repository Root Decision
 
-The application is structured so `xaicoredev/` can become the Git root. The existing
-parent Git repository remains untouched during Gate 0 because it has no commits and
-contains neighboring material. Initializing or relocating Git metadata is an Owner
-machine-level operation and must be completed deliberately before the first commit.
+`xaicoredev/` is the approved primary repository name and independent Git root for the
+XAICore Platform. Parent and neighboring workspace material is outside this
+repository's source, tooling, release, and governance boundaries.

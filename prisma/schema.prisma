@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,114 +7,422 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id            String    @id @default(cuid())
-  email         String    @unique
-  name          String?
-  password      String
-  avatar        String?
-  verified      Boolean   @default(false)
-  role          UserRole  @default(USER)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+model Identity {
+  id        String         @id @default(uuid()) @db.Uuid
+  status    IdentityStatus @default(ACTIVE)
+  createdAt DateTime       @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime       @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt DateTime?      @map("deleted_at") @db.Timestamptz(3)
 
-  wallets       Wallet[]
-  transactions  Transaction[]
-  brains        Brain[]
-  
-  @@index([email])
+  credentials          Credential[]
+  sessions             Session[]
+  devices              Device[]
+  mfaFactors           MfaFactor[]
+  recoveryMethods      RecoveryMethod[]
+  authorityAssignments ConstitutionalAuthorityAssignment[]
+  productEntitlements  ProductEntitlement[]
+  successorTrustGrants SuccessorTrustGrant[]
+  ownerBootstrap       OwnerBootstrapRecord?
+
+  @@index([status, deletedAt])
+  @@map("identities")
 }
 
-model Wallet {
-  id            String    @id @default(cuid())
-  userId        String
-  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  address       String    @unique
-  balance       Decimal   @default(0)
-  chainId       Int
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+model Credential {
+  id                String           @id @default(uuid()) @db.Uuid
+  identityId        String           @map("identity_id") @db.Uuid
+  providerId        String           @map("provider_id") @db.VarChar(100)
+  credentialType    String           @map("credential_type") @db.VarChar(100)
+  materialReference String           @map("material_reference") @db.VarChar(512)
+  status            CredentialStatus @default(ACTIVE)
+  createdAt         DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+  upgradedAt        DateTime?        @map("upgraded_at") @db.Timestamptz(3)
+  revokedAt         DateTime?        @map("revoked_at") @db.Timestamptz(3)
 
-  transactions  Transaction[]
+  identity Identity @relation(fields: [identityId], references: [id], onDelete: Restrict)
 
-  @@index([userId])
+  @@unique([providerId, materialReference])
+  @@index([identityId, status])
+  @@map("credentials")
 }
 
-model Transaction {
-  id            String    @id @default(cuid())
-  userId        String
-  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  walletId      String
-  wallet        Wallet    @relation(fields: [walletId], references: [id], onDelete: Cascade)
-  type          TransactionType
-  amount        Decimal
-  status        TransactionStatus @default(PENDING)
-  hash          String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+model Session {
+  id                       String                  @id @default(uuid()) @db.Uuid
+  identityId               String                  @map("identity_id") @db.Uuid
+  status                   SessionStatus           @default(ACTIVE)
+  assurance                AuthenticationAssurance
+  providerSessionReference String?                 @map("provider_session_reference") @db.VarChar(512)
+  authenticatedAt          DateTime                @map("authenticated_at") @db.Timestamptz(3)
+  expiresAt                DateTime                @map("expires_at") @db.Timestamptz(3)
+  lastSeenAt               DateTime                @map("last_seen_at") @db.Timestamptz(3)
+  revokedAt                DateTime?               @map("revoked_at") @db.Timestamptz(3)
+  revocationReason         String?                 @map("revocation_reason") @db.Text
+  revocationCorrelationId  String?                 @map("revocation_correlation_id") @db.VarChar(255)
+  createdAt                DateTime                @default(now()) @map("created_at") @db.Timestamptz(3)
 
-  @@index([userId])
-  @@index([walletId])
+  identity Identity @relation(fields: [identityId], references: [id], onDelete: Restrict)
+
+  @@index([identityId, status, expiresAt])
+  @@index([providerSessionReference])
+  @@map("sessions")
 }
 
-model Brain {
-  id            String    @id @default(cuid())
-  userId        String
-  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  name          String
-  description   String?
-  type          BrainType
-  status        BrainStatus @default(ACTIVE)
-  config        Json?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+model Device {
+  id           String       @id @default(uuid()) @db.Uuid
+  identityId   String       @map("identity_id") @db.Uuid
+  status       DeviceStatus @default(RECOGNIZED)
+  registeredAt DateTime     @default(now()) @map("registered_at") @db.Timestamptz(3)
+  lastSeenAt   DateTime     @map("last_seen_at") @db.Timestamptz(3)
+  revokedAt    DateTime?    @map("revoked_at") @db.Timestamptz(3)
 
-  @@index([userId])
+  identity Identity @relation(fields: [identityId], references: [id], onDelete: Restrict)
+
+  @@index([identityId, status])
+  @@map("devices")
 }
 
-model Subscription {
-  id            String    @id @default(cuid())
-  userId        String
-  email         String
-  plan          String
-  status        String    @default("active")
-  startDate     DateTime  @default(now())
-  endDate       DateTime?
-  stripeId      String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+model MfaFactor {
+  id                String       @id @default(uuid()) @db.Uuid
+  identityId        String       @map("identity_id") @db.Uuid
+  providerId        String       @map("provider_id") @db.VarChar(100)
+  factorType        String       @map("factor_type") @db.VarChar(100)
+  materialReference String       @map("material_reference") @db.VarChar(512)
+  status            FactorStatus @default(PENDING)
+  enrolledAt        DateTime     @default(now()) @map("enrolled_at") @db.Timestamptz(3)
+  verifiedAt        DateTime?    @map("verified_at") @db.Timestamptz(3)
+  revokedAt         DateTime?    @map("revoked_at") @db.Timestamptz(3)
+
+  identity Identity @relation(fields: [identityId], references: [id], onDelete: Restrict)
+
+  @@index([identityId, status])
+  @@map("mfa_factors")
 }
 
-enum UserRole {
-  ADMIN
-  USER
-  PREMIUM
+model RecoveryMethod {
+  id                String       @id @default(uuid()) @db.Uuid
+  identityId        String       @map("identity_id") @db.Uuid
+  providerId        String       @map("provider_id") @db.VarChar(100)
+  methodType        String       @map("method_type") @db.VarChar(100)
+  materialReference String       @map("material_reference") @db.VarChar(512)
+  status            FactorStatus @default(PENDING)
+  createdAt         DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
+  lastUsedAt        DateTime?    @map("last_used_at") @db.Timestamptz(3)
+  revokedAt         DateTime?    @map("revoked_at") @db.Timestamptz(3)
+
+  identity Identity @relation(fields: [identityId], references: [id], onDelete: Restrict)
+
+  @@index([identityId, status])
+  @@map("recovery_methods")
 }
 
-enum TransactionType {
-  DEPOSIT
-  WITHDRAWAL
-  TRANSFER
-  TRADE
+model ConstitutionalAuthorityAssignment {
+  id                   String             @id @default(uuid()) @db.Uuid
+  identityId           String             @map("identity_id") @db.Uuid
+  role                 ConstitutionalRole
+  status               AuthorityStatus    @default(ACTIVE)
+  grantedByAuthorityId String             @map("granted_by_authority_id") @db.Uuid
+  grantedAt            DateTime           @map("granted_at") @db.Timestamptz(3)
+  expiresAt            DateTime?          @map("expires_at") @db.Timestamptz(3)
+  revokedAt            DateTime?          @map("revoked_at") @db.Timestamptz(3)
+  version              Int                @default(1)
+
+  identity Identity @relation(fields: [identityId], references: [id], onDelete: Restrict)
+
+  @@unique([identityId, role, version])
+  @@index([role, status, expiresAt])
+  @@map("constitutional_authority_assignments")
 }
 
-enum TransactionStatus {
-  PENDING
-  CONFIRMED
-  FAILED
-  CANCELLED
+model ProductEntitlement {
+  id           String            @id @default(uuid()) @db.Uuid
+  identityId   String            @map("identity_id") @db.Uuid
+  productId    String            @map("product_id") @db.VarChar(100)
+  planId       String            @map("plan_id") @db.VarChar(100)
+  capabilities String[]
+  status       EntitlementStatus @default(ACTIVE)
+  grantedAt    DateTime          @map("granted_at") @db.Timestamptz(3)
+  expiresAt    DateTime?         @map("expires_at") @db.Timestamptz(3)
+
+  identity Identity @relation(fields: [identityId], references: [id], onDelete: Restrict)
+
+  @@unique([identityId, productId, planId])
+  @@index([identityId, status, expiresAt])
+  @@map("product_entitlements")
 }
 
-enum BrainType {
-  NEURAL_NETWORK
-  LLM
-  HYBRID
-  CUSTOM
+model SuccessorTrustGrant {
+  id                      String               @id @default(uuid()) @db.Uuid
+  identityId              String               @map("identity_id") @db.Uuid
+  grantedByAuthorityId    String               @map("granted_by_authority_id") @db.Uuid
+  scopes                  String[]
+  activationPolicyId      String               @map("activation_policy_id") @db.VarChar(255)
+  status                  SuccessorGrantStatus @default(PENDING)
+  issuedAt                DateTime             @map("issued_at") @db.Timestamptz(3)
+  expiresAt               DateTime?            @map("expires_at") @db.Timestamptz(3)
+  revokedAt               DateTime?            @map("revoked_at") @db.Timestamptz(3)
+  version                 Int                  @default(1)
+  integrityProofReference String               @map("integrity_proof_reference") @db.VarChar(512)
+
+  identity Identity @relation(fields: [identityId], references: [id], onDelete: Restrict)
+
+  @@unique([identityId, version])
+  @@index([status, expiresAt])
+  @@map("successor_trust_grants")
 }
 
-enum BrainStatus {
+model OwnerBootstrapRecord {
+  id                            String   @id @db.Uuid
+  singletonKey                  Int      @unique @default(1) @map("singleton_key")
+  identityId                    String   @unique @map("identity_id") @db.Uuid
+  ceremonyId                    String   @unique @map("ceremony_id") @db.Uuid
+  cryptographicOwnerIdentifier  String   @unique @map("cryptographic_owner_identifier") @db.VarChar(512)
+  constitutionalDocumentId      String   @map("constitutional_document_id") @db.VarChar(255)
+  constitutionalVersion         String   @map("constitutional_version") @db.VarChar(255)
+  constitutionalDigest          String   @map("constitutional_digest") @db.VarChar(128)
+  constitutionalAcceptedAt      DateTime @map("constitutional_accepted_at") @db.Timestamptz(3)
+  recoveryKeyReference          String   @map("recovery_key_reference") @db.VarChar(512)
+  successorTrustPolicyReference String   @map("successor_trust_policy_reference") @db.VarChar(512)
+  ownershipIntegrityReference   String   @map("ownership_integrity_reference") @db.VarChar(512)
+  establishedAt                 DateTime @map("established_at") @db.Timestamptz(3)
+  version                       Int      @default(1)
+
+  identity Identity @relation(fields: [identityId], references: [id], onDelete: Restrict)
+
+  @@map("owner_bootstrap_records")
+}
+
+model AuditRecord {
+  id                      String       @id @db.Uuid
+  type                    String       @db.VarChar(150)
+  action                  String       @db.VarChar(150)
+  target                  String       @db.VarChar(255)
+  outcome                 AuditOutcome
+  reason                  String       @db.Text
+  actorId                 String?      @map("actor_id") @db.VarChar(255)
+  actorKind               String       @map("actor_kind") @db.VarChar(50)
+  constitutionalAuthority String[]     @map("constitutional_authority")
+  permissionDecisionId    String?      @map("permission_decision_id") @db.VarChar(255)
+  requestId               String       @map("request_id") @db.VarChar(255)
+  correlationId           String       @map("correlation_id") @db.VarChar(255)
+  environment             String       @db.VarChar(50)
+  details                 Json?
+  occurredAt              DateTime     @map("occurred_at") @db.Timestamptz(3)
+  previousEventHash       String       @map("previous_event_hash") @db.Char(64)
+  integrityHash           String       @unique @map("integrity_hash") @db.Char(64)
+  createdAt               DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  @@index([correlationId, occurredAt])
+  @@index([actorId, occurredAt])
+  @@index([target, action, occurredAt])
+  @@map("audit_records")
+}
+
+model IdempotencyRecord {
+  id                String            @id @default(uuid()) @db.Uuid
+  scope             String            @db.VarChar(150)
+  key               String            @db.VarChar(255)
+  requestHash       String            @map("request_hash") @db.Char(64)
+  status            IdempotencyStatus @default(PENDING)
+  responseReference String?           @map("response_reference") @db.VarChar(512)
+  createdAt         DateTime          @default(now()) @map("created_at") @db.Timestamptz(3)
+  completedAt       DateTime?         @map("completed_at") @db.Timestamptz(3)
+  expiresAt         DateTime          @map("expires_at") @db.Timestamptz(3)
+
+  @@unique([scope, key])
+  @@index([status, expiresAt])
+  @@map("idempotency_records")
+}
+
+model PlatformManifestRecord {
+  id             String         @id @default(uuid()) @db.Uuid
+  componentId    String         @map("component_id") @db.VarChar(150)
+  componentKind  ComponentKind  @map("component_kind")
+  version        String         @db.VarChar(100)
+  status         ManifestStatus
+  manifest       Json
+  manifestDigest String         @map("manifest_digest") @db.Char(64)
+  createdAt      DateTime       @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  activeRegistrations PlatformRegistryRecord[]
+
+  @@unique([componentId, version])
+  @@unique([componentId, manifestDigest])
+  @@index([componentKind, status])
+  @@map("platform_manifests")
+}
+
+model PlatformRegistryRecord {
+  id               String                 @id @default(uuid()) @db.Uuid
+  componentId      String                 @unique @map("component_id") @db.VarChar(150)
+  componentKind    ComponentKind          @map("component_kind")
+  activeManifestId String                 @map("active_manifest_id") @db.Uuid
+  status           RegistryStatus         @default(REGISTERED)
+  lifecycleState   RegistryLifecycleState @default(OFFLINE) @map("lifecycle_state")
+  executionEnabled Boolean                @default(false) @map("execution_enabled")
+  reason           String                 @db.Text
+  registeredAt     DateTime               @default(now()) @map("registered_at") @db.Timestamptz(3)
+  updatedAt        DateTime               @updatedAt @map("updated_at") @db.Timestamptz(3)
+  removedAt        DateTime?              @map("removed_at") @db.Timestamptz(3)
+
+  activeManifest PlatformManifestRecord  @relation(fields: [activeManifestId], references: [id], onDelete: Restrict)
+  featureFlags   FeatureFlagDefinition[]
+
+  @@index([componentKind, status])
+  @@index([lifecycleState, executionEnabled])
+  @@map("platform_registry")
+}
+
+model FeatureFlagDefinition {
+  id               String            @id @default(uuid()) @db.Uuid
+  name             String            @unique @db.VarChar(150)
+  registryRecordId String            @map("registry_record_id") @db.Uuid
+  description      String            @db.Text
+  status           FeatureFlagStatus @default(AVAILABLE)
+  secureDefault    Boolean           @default(false) @map("secure_default")
+  createdAt        DateTime          @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt        DateTime          @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  registryRecord PlatformRegistryRecord @relation(fields: [registryRecordId], references: [id], onDelete: Restrict)
+  values         FeatureFlagValue[]
+
+  @@index([registryRecordId, status])
+  @@map("feature_flag_definitions")
+}
+
+model FeatureFlagValue {
+  id           String   @id @default(uuid()) @db.Uuid
+  definitionId String   @map("definition_id") @db.Uuid
+  environment  String   @db.VarChar(50)
+  enabled      Boolean  @default(false)
+  reason       String   @db.Text
+  version      Int      @default(1)
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt    DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  definition FeatureFlagDefinition @relation(fields: [definitionId], references: [id], onDelete: Restrict)
+
+  @@unique([definitionId, environment])
+  @@index([environment, enabled])
+  @@map("feature_flag_values")
+}
+
+enum IdentityStatus {
   ACTIVE
-  INACTIVE
-  TRAINING
-  ERROR
+  SUSPENDED
+  DISABLED
+  DELETED
+}
+
+enum CredentialStatus {
+  ACTIVE
+  SUSPENDED
+  REVOKED
+  EXPIRED
+}
+
+enum SessionStatus {
+  ACTIVE
+  REVOKED
+  EXPIRED
+}
+
+enum DeviceStatus {
+  RECOGNIZED
+  TRUSTED
+  REVOKED
+}
+
+enum FactorStatus {
+  PENDING
+  ACTIVE
+  REVOKED
+}
+
+enum AuthenticationAssurance {
+  SINGLE_FACTOR
+  MULTI_FACTOR
+  PHISHING_RESISTANT
+}
+
+enum ConstitutionalRole {
+  OWNER
+  DESIGNATED_SUCCESSOR
+  OPERATIONAL_ADMINISTRATOR
+}
+
+enum AuthorityStatus {
+  ACTIVE
+  REVOKED
+  EXPIRED
+}
+
+enum EntitlementStatus {
+  ACTIVE
+  SUSPENDED
+  REVOKED
+  EXPIRED
+}
+
+enum SuccessorGrantStatus {
+  PENDING
+  ACTIVE
+  REVOKED
+  EXPIRED
+}
+
+enum AuditOutcome {
+  ALLOWED
+  DENIED
+  SUCCEEDED
+  FAILED
+}
+
+enum IdempotencyStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
+
+enum ComponentKind {
+  AI
+  SERVICE
+  MODULE
+  PLUGIN
+  INFRASTRUCTURE
+}
+
+enum ManifestStatus {
+  EXPERIMENTAL
+  ACTIVE
+  DEPRECATED
+  RETIRED
+}
+
+enum RegistryStatus {
+  REGISTERED
+  DISABLED
+  REMOVED
+}
+
+enum RegistryLifecycleState {
+  PROVISIONING
+  INITIALIZING
+  RUNNING
+  BUSY
+  IDLE
+  SLEEPING
+  MAINTENANCE
+  UPDATING
+  RESTARTING
+  RECOVERY
+  SHUTDOWN
+  OFFLINE
+  DEPRECATED
+  REMOVED
+}
+
+enum FeatureFlagStatus {
+  AVAILABLE
+  UNAVAILABLE
+  RETIRED
 }
