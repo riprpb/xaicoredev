@@ -1,8 +1,8 @@
 # Gate 1 Workstream 9 Progress
 
 **Workstream:** 9 - Owner Operations Slice  
-**Status:** IMPLEMENTED FOUNDATION - live activation pending  
-**Assessment date:** 2026-06-22
+**Status:** IMPLEMENTED FOUNDATION - local Owner authentication activated
+**Assessment date:** 2026-06-30
 
 ## Implemented
 
@@ -22,7 +22,8 @@
 - Optional Owner API routes with authentication, CSRF, input validation, and generic
   errors.
 - Active API rate-limit regression coverage for the `/api` surface.
-- Routes remain unmounted in the default server until live authentication is ready.
+- Routes remain unmounted in the default server until migration-backed activation is
+  ready.
 
 ## Verification
 
@@ -33,10 +34,12 @@
 - Synthetic integrated platform chain: PASS.
 - Gate 1 security validation evidence: RECORDED.
 - Type checking and lint: PASS.
-- Live password setup and sign-in: NOT RUN - the verified ceremony is ready but no
-  Owner credential has been provisioned.
-- Live MFA: NOT RUN - the verified TOTP ceremony is ready but no Owner factor has been
-  generated or enrolled.
+- Live password setup: PASS - the Owner provisioned the local credential directly in
+  the protected local directory.
+- Live MFA enrollment and verification: PASS - the Owner enrolled and verified the
+  encrypted local TOTP factor directly in the terminal.
+- Live MFA recovery-code generation: PASS - exactly ten code hashes are active, no
+  plaintext code fields are persisted, and the successful generation event is audited.
 - Migration-backed session and Feature Flag action: PENDING disposable PostgreSQL.
 - ADR change required: NO. The implementation follows ADR-0015, ADR-0016, and the
   accepted Kernel/authority decisions.
@@ -50,7 +53,7 @@ migration-backed validation required by the Gate 1 exit criteria.
 
 ## Owner Input Boundary
 
-The next live steps require the Owner to run the prepared local password ceremony and
-then the separate TOTP enrollment ceremony with an authenticator application. No live
-credential or factor secret has been generated, requested in chat, or stored
-automatically.
+Owner credential, TOTP, and recovery ceremonies were completed directly in the local
+terminal. Secret values were not requested in chat and remain excluded from the
+repository. Migration-backed session and Feature Flag validation remains blocked on an
+approved or disposable PostgreSQL environment.

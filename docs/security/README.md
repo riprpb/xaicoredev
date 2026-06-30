@@ -19,3 +19,5 @@ incident response, privacy, KYC data handling, and release security evidence.
 - [Gate 1 security validation](gate-one-security-validation.md) records tested abuse
   cases, verified controls, and remaining live validation without exposing restricted
   Root Authority mechanisms.
+- [KeePassXC vault initialization](keepassxc-vault-initialization.md) records the local
+  empty-vault import utility and Owner secret-handling boundary.

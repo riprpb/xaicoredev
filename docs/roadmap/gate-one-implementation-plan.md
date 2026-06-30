@@ -154,7 +154,7 @@ flags evaluate disabled.
 
 ## Workstream 9: Owner Operations Slice
 
-**Status:** Foundation implemented; live credential, MFA, and PostgreSQL activation pending
+**Status:** Foundation and local Owner authentication implemented; PostgreSQL activation pending
 
 - Provide authenticated Owner sign-in and secure session management.
 - Display API, database, Registry, and configuration health.
@@ -165,15 +165,13 @@ flags evaluate disabled.
 The Kernel gateway, provider-neutral MFA Owner-session authentication, authenticated
 Owner status service, CSRF-protected Feature Flag route, reason and reauthentication
 policy, and correlated audit response are implemented and verified synthetically. The
-routes remain unmounted by default. The create-once local password and encrypted TOTP
-ceremonies are ready but have not been executed. Live activation still requires direct
-Owner password entry, authenticator enrollment, and a verified PostgreSQL migration;
-none is created automatically.
+routes remain unmounted by default. The Owner completed the create-once local password,
+encrypted TOTP, and recovery-code ceremonies directly in the local terminal. Route
+activation still requires a verified PostgreSQL migration.
 
 ## Security Validation
 
-**Status:** Implementation evidence recorded; live credential and PostgreSQL validation
-pending
+**Status:** Local credential and MFA evidence recorded; live PostgreSQL validation pending
 
 - Threat model identity, sessions, successor grants, authorization, audit integrity,
   configuration, and feature-flag changes.
@@ -183,8 +181,7 @@ pending
   and recovery tests in CI.
 
 Security validation evidence is recorded in `docs/security/gate-one-security-validation.md`.
-The remaining live items require direct Owner credential/MFA entry and an approved or
-disposable PostgreSQL database.
+The remaining live items require an approved or disposable PostgreSQL database.
 
 ## Explicitly Deferred
 

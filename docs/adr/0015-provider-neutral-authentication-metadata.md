@@ -1,7 +1,7 @@
 # ADR-0015: Provider-Neutral Authentication Metadata
 
-**Decision Number:** 0015  
-**Date:** 2026-06-22  
+**Decision Number:** 0015
+**Date:** 2026-06-22
 **Status:** Accepted by Gate 1 plan approval
 
 ## Problem Statement
@@ -43,6 +43,13 @@ handling, and security policies remain necessary after Owner decisions.
 The selected identity strategy implements verification behind Kernel-managed services.
 Persistence maps these records without adding secret material to general identity
 queries.
+
+Owner recovery remains intentionally split. Owner MFA recovery codes are single-use
+secrets displayed once and persisted only as salted hashes behind recovery-method
+references with audit coverage for generation, regeneration, and use. Successor
+recovery remains a separate opaque protected reference under an active approved policy,
+with no automatic activation, no implicit credential issuance, and no constitutional
+authority mutation.
 
 ## Related Components
 

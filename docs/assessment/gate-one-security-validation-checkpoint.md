@@ -1,7 +1,7 @@
 # Gate 1 Security Validation Checkpoint
 
-**Date:** 2026-06-22  
-**Status:** PASS - implementation evidence recorded; live activation pending
+**Date:** 2026-06-30
+**Status:** PASS - local Owner authentication activated; database validation pending
 
 ## Summary
 
@@ -31,12 +31,13 @@ business feature expansion.
 - Production build: PASS.
 - Dependency audit at high severity: PASS, 0 vulnerabilities.
 - Whitespace check: PASS.
-- Live credential, session, MFA, or factor artifacts in `.xaicore-private`: NONE FOUND.
+- Live Owner credential and encrypted MFA factor: VERIFIED PRESENT in the ignored
+  private directory without exposing their contents.
+- Live recovery state: PASS - 10 salted hashes, zero plaintext code fields, and a
+  successful generation audit event.
 
 ## Known Blockers
 
-- Live Owner password provisioning requires direct Owner terminal entry.
-- Live Owner TOTP enrollment requires direct Owner authenticator entry.
 - Migration-backed Owner session and Feature Flag action require disposable or approved
   PostgreSQL.
 - Production PostgreSQL hosting, backup policy, deployment provider, production region,

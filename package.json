@@ -37,6 +37,8 @@
     "owner:bootstrap": "tsx src/cli/owner-bootstrap.ts",
     "owner:credentials": "tsx src/cli/owner-credential.ts",
     "owner:mfa": "tsx src/cli/owner-mfa.ts",
+    "owner:recovery": "tsx src/cli/owner-recovery.ts",
+    "keepassxc:init": "tsx src/cli/keepassxc-init.ts",
     "clean": "rimraf dist node_modules"
   },
   "dependencies": {

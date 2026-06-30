@@ -64,6 +64,8 @@ Thumbs.db
 desktop.ini
 .gitconfig
 .git-for-windows-updater
+/kubectl.exe
+/kubectl.exe.sha256
 
 # Temporary
 temp/

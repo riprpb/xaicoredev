@@ -1,7 +1,7 @@
 # Gate 1 Security Validation
 
-**Status:** Implementation evidence recorded; live database and credential activation pending  
-**Date:** 2026-06-22
+**Status:** Local credential and MFA activation verified; live database validation pending
+**Date:** 2026-06-30
 
 Gate 1 security validation covers the foundation required before any production
 deployment consideration. This document records engineering evidence only; production
@@ -26,6 +26,9 @@ deployment remains a separate Owner authorization decision.
 - Configuration separates public values, sensitive references, and secrets.
 - Local Owner credential and TOTP ceremonies are create-once, local-only, and keep
   password material and factor secrets outside repository source.
+- Owner MFA recovery generation requires password and current TOTP verification,
+  persists exactly ten salted hashes without plaintext codes, and creates an integrity-
+  chained audit event.
 
 ## Abuse Cases
 
@@ -42,10 +45,6 @@ deployment remains a separate Owner authorization decision.
 
 ## Remaining Live Validation
 
-- Live Owner password provisioning must be performed directly by the Owner in the local
-  terminal.
-- Live TOTP enrollment must be performed directly by the Owner with an authenticator
-  application.
 - Migration-backed Owner session and Feature Flag action must be verified against a
   disposable or approved PostgreSQL database.
 - Production secret management, PostgreSQL hosting, backup policy, deployment provider,
