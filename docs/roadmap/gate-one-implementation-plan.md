@@ -16,6 +16,8 @@ authorization denials and successful actions create trustworthy audit records.
 
 ## Workstream 0: Haley Core Foundation
 
+**Status:** Complete; verified 2026-06-30
+
 Haley Core is a platform monitoring service, not the complete Haley AI. Establish
 read-only contracts and services for:
 
@@ -30,6 +32,10 @@ Haley Core may detect, monitor, analyze, recommend, and request Owner approval. 
 not execute privileged operations or receive knowledge of private Root Authority and
 emergency-control mechanisms. Business intelligence, legal reasoning, orchestration,
 and advanced AI behavior remain deferred.
+
+The read-only awareness contracts, Kernel gateway integration, health and diagnostic
+aggregation, executive snapshot backend, and authority-boundary tests are implemented
+and verified. Haley Core has no mutation or privileged-execution interface.
 
 ## Workstream 1: Configuration and Secrets
 
