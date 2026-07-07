@@ -115,7 +115,7 @@ health, readiness, liveness, version, dependency, and metrics evidence.
 
 ## Workstream 6: Database Baseline
 
-**Status:** Implementation complete; live PostgreSQL verification blocked locally
+**Status:** Complete; verified against local PostgreSQL on 2026-07-07
 
 - Review and replace the draft Prisma schema with Tier 1 foundation models only.
 - Create and test the initial PostgreSQL migration.
@@ -126,13 +126,14 @@ health, readiness, liveness, version, dependency, and metrics evidence.
 The draft business schema was replaced with Tier 1 foundation models and a hardened
 initial PostgreSQL migration. Prisma lifecycle, serializable transactions, repository
 ports, Decimal/timestamp/soft-delete/idempotency policies, static migration tests, and
-disposable PostgreSQL CI verification are implemented. This workstation has no Docker,
-`psql`, or PostgreSQL service, so live migration and restore execution remain unverified
-until CI or an Owner-approved development database is available.
+database integration verification are implemented. Local PostgreSQL 16.14 migration
+deployment, migration status, reset, and integration tests passed on 2026-07-07.
+Production restore execution remains blocked until hosting and backup requirements are
+approved.
 
 ## Workstream 7: Persistent Platform Registries
 
-**Status:** Implementation complete; live PostgreSQL verification pending
+**Status:** Complete; verified against local PostgreSQL on 2026-07-07
 
 - Persist standard manifests and registration records.
 - Authorize and audit Registry mutations through the Kernel.
@@ -146,7 +147,7 @@ execution-disabled and limited to offline, shutdown, or removed lifecycle states
 
 ## Workstream 8: Registered Feature Flag Persistence
 
-**Status:** Implementation complete; live PostgreSQL verification pending
+**Status:** Complete; verified against local PostgreSQL on 2026-07-07
 
 - Register every feature flag through the persistent Registry architecture.
 - Persist feature-flag configuration only after its Registry record exists.
@@ -160,7 +161,8 @@ flags evaluate disabled.
 
 ## Workstream 9: Owner Operations Slice
 
-**Status:** Foundation and local Owner authentication implemented; PostgreSQL activation pending
+**Status:** Foundation and local Owner authentication implemented; local PostgreSQL
+validation passed
 
 - Provide authenticated Owner sign-in and secure session management.
 - Display API, database, Registry, and configuration health.
@@ -172,12 +174,13 @@ The Kernel gateway, provider-neutral MFA Owner-session authentication, authentic
 Owner status service, CSRF-protected Feature Flag route, reason and reauthentication
 policy, and correlated audit response are implemented and verified synthetically. The
 routes remain unmounted by default. The Owner completed the create-once local password,
-encrypted TOTP, and recovery-code ceremonies directly in the local terminal. Route
-activation still requires a verified PostgreSQL migration.
+encrypted TOTP, and recovery-code ceremonies directly in the local terminal. Local
+PostgreSQL migration-backed validation passed on 2026-07-07.
 
 ## Security Validation
 
-**Status:** Local credential and MFA evidence recorded; live PostgreSQL validation pending
+**Status:** Local credential, MFA, and PostgreSQL evidence recorded; remote CI and
+secret-scan evidence pending
 
 - Threat model identity, sessions, successor grants, authorization, audit integrity,
   configuration, and feature-flag changes.
@@ -187,7 +190,8 @@ activation still requires a verified PostgreSQL migration.
   and recovery tests in CI.
 
 Security validation evidence is recorded in `docs/security/gate-one-security-validation.md`.
-The remaining live items require an approved or disposable PostgreSQL database.
+The remaining live items require remote CI/secret-scan evidence and approved staging,
+rollback, hosting, and backup decisions.
 
 ## Explicitly Deferred
 

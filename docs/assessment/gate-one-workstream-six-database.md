@@ -1,8 +1,8 @@
 # Gate 1 Workstream 6 Verification
 
 **Workstream:** 6 - Database Baseline  
-**Status:** IMPLEMENTED - live PostgreSQL verification pending  
-**Assessment date:** 2026-06-22
+**Status:** VERIFIED AGAINST LOCAL POSTGRESQL
+**Assessment date:** 2026-07-07
 
 ## Implemented
 
@@ -26,10 +26,9 @@
 - Database policy tests: PASS.
 - Database unit coverage: 100% statements, branches, functions, and lines.
 - Type checking and lint: PASS.
-- Live PostgreSQL migration: NOT RUN - no Docker, `psql`, or PostgreSQL service exists
-  on this workstation.
-- Live rollback, trigger, and singleton tests: PENDING CI or approved development
-  PostgreSQL.
+- Live PostgreSQL migration: PASS - PostgreSQL 16.14 local validation database.
+- Live rollback, trigger, and singleton tests: PASS - local `xaicore_validation`
+  database reset, migrations reapplied, and database integration tests executed.
 - Restore exercise: BLOCKED - hosting and backup provider are not selected.
 
 ## Architecture Review
@@ -38,5 +37,6 @@ ADR-0003 already establishes PostgreSQL and Prisma. No new ADR is required for t
 baseline implementation. Selecting hosting, region, backup retention, or production
 recovery parameters requires Owner approval and may require a provider-specific ADR.
 
-Workstream 6 must not be marked fully verified until its migration and integration test
-run succeeds against disposable PostgreSQL. Production remains separately gated.
+Workstream 6 is verified against the local development PostgreSQL validation database.
+Production hosting, restore evidence, and provider-specific recovery parameters remain
+separately gated.

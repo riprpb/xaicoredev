@@ -1,7 +1,7 @@
 # Gate 1 Security Validation Checkpoint
 
-**Date:** 2026-06-30
-**Status:** PASS - local Owner authentication activated; database validation pending
+**Date:** 2026-07-07
+**Status:** PASS - local Owner authentication and PostgreSQL validation verified
 
 ## Summary
 
@@ -15,8 +15,9 @@ business feature expansion.
 - Added the permanent Gate 1 security validation record at
   `docs/security/gate-one-security-validation.md`.
 - Linked the security validation record from the Security Documentation index.
-- Updated the Gate 1 implementation plan to show security validation evidence as
-  recorded while live credential and PostgreSQL validation remain pending.
+- Updated the Gate 1 implementation plan to show local credential, MFA, recovery, and
+  PostgreSQL validation evidence as recorded while remote CI and local secret-scan
+  evidence remain pending.
 - Updated the Workstream 9 report to include rate-limit regression coverage and
   recorded security validation evidence.
 - Added active API rate-limit regression coverage for the `/api` surface.
@@ -27,9 +28,12 @@ business feature expansion.
 - Prisma schema validation with local development `DATABASE_URL`: PASS.
 - Type check: PASS.
 - Lint: PASS.
-- Full test suite: PASS, 185 passed / 1 skipped.
+- Full test suite: PASS, 195 passed / 1 skipped.
+- Local PostgreSQL migration deploy and status: PASS.
+- Migration-backed database integration tests: PASS.
 - Production build: PASS.
 - Dependency audit at high severity: PASS, 0 vulnerabilities.
+- Secret scan: PASS - local `gitleaks` repository/history scan found no leaks.
 - Whitespace check: PASS.
 - Live Owner credential and encrypted MFA factor: VERIFIED PRESENT in the ignored
   private directory without exposing their contents.
@@ -38,8 +42,8 @@ business feature expansion.
 
 ## Known Blockers
 
-- Migration-backed Owner session and Feature Flag action require disposable or approved
-  PostgreSQL.
+- GitHub remote remains unresolved, so remote CI and remote secret-scan evidence cannot
+  be triggered.
 - Production PostgreSQL hosting, backup policy, deployment provider, production region,
   and production secret-management provider remain Owner decisions.
 

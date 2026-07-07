@@ -1,8 +1,8 @@
 # Gate 1 Workstream 8 Verification
 
 **Workstream:** 8 - Registered Feature Flag Persistence  
-**Status:** IMPLEMENTED - live PostgreSQL verification pending  
-**Assessment date:** 2026-06-22
+**Status:** VERIFIED AGAINST LOCAL POSTGRESQL
+**Assessment date:** 2026-07-07
 
 ## Implemented
 
@@ -24,7 +24,8 @@
 - Static migration invariants: PASS.
 - Permission matrix registration/update actions: PASS.
 - Type checking and lint: PASS.
-- Live PostgreSQL constraints and integration action: PENDING disposable CI database.
+- Live PostgreSQL constraints and integration action: PASS - local PostgreSQL 16.14
+  migration-backed integration verified registered Feature Flag persistence.
 - ADR change required: NO. Registry-before-flag persistence follows the approved Gate 1
   workstream order.
 

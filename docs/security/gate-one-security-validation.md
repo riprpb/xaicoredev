@@ -1,7 +1,7 @@
 # Gate 1 Security Validation
 
-**Status:** Local credential and MFA activation verified; live database validation pending
-**Date:** 2026-06-30
+**Status:** Local credential, MFA, recovery, and database validation verified
+**Date:** 2026-07-07
 
 Gate 1 security validation covers the foundation required before any production
 deployment consideration. This document records engineering evidence only; production
@@ -45,8 +45,10 @@ deployment remains a separate Owner authorization decision.
 
 ## Remaining Live Validation
 
-- Migration-backed Owner session and Feature Flag action must be verified against a
-  disposable or approved PostgreSQL database.
+- Local PostgreSQL 16.14 migration-backed validation passed for database constraints,
+  Registry persistence, Feature Flag persistence, and integrated platform validation.
+- Local `gitleaks` repository/history scan passed with no leaks found. Remote CI
+  secret-scan evidence remains pending until the GitHub remote is resolved.
 - Production secret management, PostgreSQL hosting, backup policy, deployment provider,
   and production region remain Owner decisions.
 

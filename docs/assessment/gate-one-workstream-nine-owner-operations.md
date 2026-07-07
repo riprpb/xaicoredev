@@ -1,8 +1,8 @@
 # Gate 1 Workstream 9 Progress
 
 **Workstream:** 9 - Owner Operations Slice  
-**Status:** IMPLEMENTED FOUNDATION - local Owner authentication activated
-**Assessment date:** 2026-06-30
+**Status:** VERIFIED FOUNDATION - local Owner authentication and PostgreSQL validation
+**Assessment date:** 2026-07-07
 
 ## Implemented
 
@@ -40,7 +40,8 @@
   encrypted local TOTP factor directly in the terminal.
 - Live MFA recovery-code generation: PASS - exactly ten code hashes are active, no
   plaintext code fields are persisted, and the successful generation event is audited.
-- Migration-backed session and Feature Flag action: PENDING disposable PostgreSQL.
+- Migration-backed session and Feature Flag action: PASS - local PostgreSQL 16.14
+  validation database, migration reset, and integrated database tests.
 - ADR change required: NO. The implementation follows ADR-0015, ADR-0016, and the
   accepted Kernel/authority decisions.
 
@@ -48,12 +49,13 @@
 
 Synthetic integration verifies Kernel routing, Registry reads, Memory foundation reads,
 Haley Core aggregation, MFA Owner session authentication, Permission Engine evaluation,
-Feature Flag mutation, and correlated Audit together. This does not replace the
-migration-backed validation required by the Gate 1 exit criteria.
+Feature Flag mutation, and correlated Audit together. Local PostgreSQL integration also
+verified the migration-backed persistence constraints required by the Gate 1 exit
+criteria.
 
 ## Owner Input Boundary
 
 Owner credential, TOTP, and recovery ceremonies were completed directly in the local
-terminal. Secret values were not requested in chat and remain excluded from the
-repository. Migration-backed session and Feature Flag validation remains blocked on an
-approved or disposable PostgreSQL environment.
+terminal. Secret values remain excluded from the repository. The local database
+password was rotated after accidental disclosure and is stored only in ignored local
+configuration.

@@ -1,7 +1,7 @@
 # Gate 1 Readiness Checkpoint
 
-**Date:** 2026-06-30
-**Status:** ENGINEERING FOUNDATION VERIFIED - external activation blockers remain
+**Date:** 2026-07-07
+**Status:** LOCAL ENGINEERING FOUNDATION VERIFIED - external activation blockers remain
 
 ## Completed Workstreams
 
@@ -13,13 +13,13 @@
 - Workstream 4 - Permission Engine: COMPLETE.
 - Workstream 5 - Audit and Observability: COMPLETE.
 
-## Implemented Pending Live PostgreSQL Verification
+## Verified Against Local PostgreSQL
 
-- Workstream 6 - Database Baseline.
-- Workstream 7 - Persistent Platform Registries.
-- Workstream 8 - Registered Feature Flag Persistence.
+- Workstream 6 - Database Baseline: PASS.
+- Workstream 7 - Persistent Platform Registries: PASS.
+- Workstream 8 - Registered Feature Flag Persistence: PASS.
 - Workstream 9 - Owner Operations migration-backed session and reversible Feature Flag
-  action.
+  action: PASS.
 
 ## Live Owner Security Verification
 
@@ -34,36 +34,41 @@
 
 - Full test suite: PASS - 195 passed, 1 skipped.
 - Integrated Platform Validation: PASS.
+- Local PostgreSQL migration deploy: PASS.
+- Local PostgreSQL migration status: PASS.
+- Migration-backed database integration tests: PASS - 2 tests across 2 files.
 - Type checking: PASS.
 - Lint: PASS.
 - Production build: PASS.
 - Prisma schema validation: PASS.
 - Dependency audit at high severity: PASS - zero vulnerabilities.
+- Secret scan: PASS - `gitleaks detect --redact --source . --verbose` scanned 7
+  commits and found no leaks.
 - Git whitespace validation: PASS.
 - KeePassXC empty-vault initialization tests: PASS.
 - Owner recovery generation, denial, use, and regeneration tests: PASS.
 
 ## Checkpoint
 
-- Commit: `d97e58c` (`checkpoint: activate owner MFA recovery foundation`).
-- Tag: `gate1-owner-mfa-recovery-complete`.
+- Commit: `78abb79` (`checkpoint: document deployment governance baseline`).
+- Latest local checkpoint tag: `gate1-deployment-governance-checkpoint`.
 - Verified Git bundle backup stored outside the repository under the sibling `backups`
   directory.
-- Root `kubectl.exe` and `kubectl.exe.sha256` downloads are ignored and were not
-  committed.
+- Root `kubectl.exe` and `kubectl.exe.sha256` downloads were moved outside the
+  repository to the sibling `tools` directory.
 
 ## Blocking Inputs
 
-- No Docker, Podman, PostgreSQL client, or PostgreSQL service is available locally.
-- No Git remote is configured, so the existing PostgreSQL 16 CI workflow cannot be
-  triggered from this repository.
-- PostgreSQL hosting, backup requirements, and an approved disposable or development
-  database remain unresolved.
+- GitHub remote remains unresolved: the configured `origin` returns `Repository not
+  found`, so remote CI evidence cannot be triggered yet.
+- PostgreSQL hosting and backup requirements remain unresolved for staging and
+  production.
 - Deployment provider, production region, and production secret-management provider
   remain unresolved Owner decisions.
 - Staging evidence, rollback execution, and production deployment authorization remain
   pending and separate from engineering completion.
 
-Gate 1 cannot be declared complete and Gate 2 must not begin until the migration-backed
-validation, staging evidence, and remaining Owner decisions satisfy the approved exit
-criteria.
+Gate 1 local engineering validation is substantially complete. Gate 1 still cannot be
+declared fully complete and Gate 2 must not begin until remote CI/secret-scan evidence,
+staging evidence, rollback evidence, and remaining Owner decisions satisfy the approved
+exit criteria.

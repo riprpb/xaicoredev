@@ -1,8 +1,8 @@
 # Gate 1 Workstream 7 Verification
 
 **Workstream:** 7 - Persistent Platform Registries  
-**Status:** IMPLEMENTED - live PostgreSQL verification pending  
-**Assessment date:** 2026-06-22
+**Status:** VERIFIED AGAINST LOCAL POSTGRESQL
+**Assessment date:** 2026-07-07
 
 ## Implemented
 
@@ -25,7 +25,8 @@
 - Prisma schema validation and generation: PASS.
 - Static migration invariants: PASS.
 - Type checking and lint: PASS.
-- Live PostgreSQL constraints: PENDING disposable CI database.
+- Live PostgreSQL constraints: PASS - local PostgreSQL 16.14 migration-backed
+  integration verified Registry constraints and offline AI enforcement.
 - ADR change required: NO. This implements the approved manifest, Kernel, and
   PostgreSQL decisions.
 
