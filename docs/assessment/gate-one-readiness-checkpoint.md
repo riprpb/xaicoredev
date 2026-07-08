@@ -59,8 +59,8 @@
 
 ## Blocking Inputs
 
-- GitHub remote remains unresolved: the configured `origin` returns `Repository not
-  found`, so remote CI evidence cannot be triggered yet.
+- GitHub remote is resolved at `https://github.com/riprpb/xaicoredev.git`; remote CI
+  evidence still requires a completed GitHub Actions run to be reviewed and recorded.
 - PostgreSQL hosting and backup requirements remain unresolved for staging and
   production.
 - Deployment provider, production region, and production secret-management provider

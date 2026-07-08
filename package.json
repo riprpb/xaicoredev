@@ -10,7 +10,7 @@
   "license": "PROPRIETARY",
   "repository": {
     "type": "git",
-    "url": "https://github.com/XAICoreDev/xaicore-platform.git"
+    "url": "https://github.com/riprpb/xaicoredev.git"
   },
   "type": "module",
   "scripts": {
