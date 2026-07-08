@@ -20,6 +20,14 @@ XAICore project and declares 100% ownership of the project, platform concept, so
 documentation, architecture, and related work product unless a future written
 Owner-approved assignment states otherwise.
 
+The Owner declares that no prior external platform, contractor, vendor, AI service,
+development environment, administrator, automation provider, or third-party team has
+ownership rights, platform authority, license rights, control rights, or claim authority
+over XAICore unless those rights are granted through a written Owner-approved agreement.
+
+The Owner has filed patent-application materials related to XAICore. Patent prosecution,
+assignment, licensing, and enforcement records remain Owner-controlled legal materials.
+
 ## Owned AI Agents
 
 - Haley Core - platform awareness and executive monitoring foundation.
@@ -34,15 +42,22 @@ XAC remains disabled and out of scope for Gate 1 implementation. No blockchain, 
 trading, custody, token issuance, or payment functionality is active in the current
 platform foundation.
 
-## Owner-Reserved Controls
+## Owner-Reserved and Privileged Controls
 
-Master shutdown, component shutdown, reboot, recovery, constitutional modification,
-root security changes, special administrator privileges, permanent AI activation or
-removal, and emergency platform authority require authenticated Owner approval through
-the Kernel and Permission Engine.
+Main platform shutdown, all reboot switches, all reset switches, all recovery switches,
+constitutional modification, root security changes, special privileged administrator
+authority, permanent AI activation or removal, and emergency platform authority require
+authenticated Owner approval through the Kernel and Permission Engine.
 
-Reboot controls and reboot switches are Owner-only unless a future Owner-approved
-successor authority policy explicitly defines otherwise.
+The main platform shutdown switch remains Owner-only. Component shutdown switches may
+be accessible to the Owner and to special privileged administrators only when explicitly
+granted by Owner-approved policy through the Kernel and Permission Engine.
+
+Reboot, reset, and recovery switches are Owner-only.
+
+Special privileged administrator authority must record incident-relevant platform data
+within a 168-hour incident review window for security investigation, development
+verification, auditability, and platform protection.
 
 ## Excluded Prior External Material
 
