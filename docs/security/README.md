@@ -6,6 +6,8 @@ incident response, privacy, KYC data handling, and release security evidence.
 
 - [Root Authority information boundary](root-authority-boundary.md) records the
   internal security directive without disclosing restricted control mechanisms.
+- [Owner information](owner-information.md) records the Owner-declared platform,
+  entity, ownership, and Owner-reserved control baseline.
 - [Constitutional identity model](constitutional-identity-model.md) separates authority
   assignments, successor trust metadata, and product entitlements.
 - [Owner Bootstrap review](owner-bootstrap-review.md) records high-level guarantees and
